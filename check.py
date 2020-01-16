@@ -61,7 +61,7 @@ dag = DAG(
 
 step_adder = EmrAddStepsOperator(
     task_id='add_steps',
-    job_flow_id="j-3VQJPBNHI0US4",
+    job_flow_id="j-1WVN1HOQN9FNC",
     aws_conn_id='aws_emr',
     steps=HIVE_TEST_STEPS,
     dag=dag
@@ -69,7 +69,7 @@ step_adder = EmrAddStepsOperator(
 
 step_checker = EmrStepSensor(
     task_id='watch_step',
-    job_flow_id="j-3VQJPBNHI0US4",
+    job_flow_id="j-1WVN1HOQN9FNC",
     step_id="{{ task_instance.xcom_pull('add_steps', key='return_value')[0] }}",
     aws_conn_id='aws_emr',
     dag=dag
