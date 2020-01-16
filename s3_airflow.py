@@ -29,10 +29,9 @@ dag = DAG(
 
 def poke(ds, **kwargs):
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
-    str=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
-    loop=str.split("\n")
-    for x in loop
-        print(x)
+    st=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
+    loop=st.split("\n")
+    print(loop)
 
 run_this = PythonOperator(
     task_id='print_the_context',
