@@ -32,6 +32,7 @@ HIVE_TEST_STEPS = [
         'HadoopJarStep': {
             'Jar': 'command-runner.jar',
             'Args': [
+                'hive',
                 '-e',
                 'msck repair table dataplatform.booking'
             ]
