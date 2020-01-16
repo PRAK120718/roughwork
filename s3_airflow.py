@@ -31,7 +31,8 @@ def poke(ds, **kwargs):
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
     st=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
     loop=st.split("\n")
-    print(loop)
+    for string in loop
+        print(string)
 
 run_this = PythonOperator(
     task_id='print_the_context',
