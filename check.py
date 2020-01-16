@@ -45,7 +45,7 @@ HIVE_TEST_STEPS = [
 
 
 dag = DAG(
-    'check_emr_steps',
+    'prakarsh_hive',
     default_args=default_args,
     dagrun_timeout=timedelta(hours=2),
     #schedule_interval='0 3 * * *'
