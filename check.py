@@ -16,7 +16,7 @@ default_args = {
     'email': ['prakarsh2512@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': True,
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
     # 'queue': 'bash_queue',
     # 'pool': 'backfill',
@@ -33,11 +33,7 @@ HIVE_TEST_STEPS = [
             'Jar': 'command-runner.jar',
             'Args': [
                 '-e',
-                'msck repair table dataplatform.booking',
-                '',
-                '',
-                '-d',
-                ''
+                'msck repair table dataplatform.booking'
             ]
         }
     }
