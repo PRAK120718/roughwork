@@ -1,0 +1,15 @@
+msck repair table dataplatform.task_fact_daily_agg_entity 
+msck repair table dataplatform.task_fact_daily_agg_agent 
+msck repair table dataplatform.booking_fact_daily_agg_user 
+msck repair table dataplatform.booking_fact_daily_agg_overall 
+msck repair table dataplatform.booking_fact_daily_agg_bike 
+msck repair table dataplatform.bike_status_log 
+msck repair table dataplatform.booking_fact
+msck repair table dataplatform.booking 
+msck repair table dataplatform.end_trip_feedback 
+ 
+
+
+
+
+
