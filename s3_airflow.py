@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+import airflow
 from airflow import DAG
 from airflow import hooks
 from airflow.operators.bash_operator import BashOperator
@@ -25,11 +27,9 @@ dag = DAG(
     schedule_interval=timedelta(minutes=5)
 )
 
-
 def poke(ds, **kwargs):
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
-    f=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
-    print(type(f))
+    print(type(hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')))
 
 run_this = PythonOperator(
     task_id='print_the_context',
