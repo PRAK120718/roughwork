@@ -1,5 +1,3 @@
-from datetime import datetime,timedelta
-import airflow
 from airflow import DAG
 from airflow import hooks
 from airflow.operators.bash_operator import BashOperator
@@ -23,14 +21,17 @@ dag = DAG(
     'check_emr_steps',
     default_args=default_args,
     dagrun_timeout=timedelta(hours=2),
-    #schedule_interval='0 3 * * *'
+    # schedule_interval='0 3 * * *'
     schedule_interval=timedelta(minutes=5)
 )
 
+
 def poke(ds, **kwargs):
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
-    print(hook.read_key(key='prod_deployment/conf/athena_all_tables',bucket_name='bounce-data-platform'))
-
+    f=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
+    fr=f.readLines()
+    for x in fr
+        print(x+"\n")
 
 run_this = PythonOperator(
     task_id='print_the_context',
@@ -43,9 +44,6 @@ t1 = BashOperator(
     task_id='print_date',
     bash_command='date',
     dag=dag)
-
-
-    
 
 run_this >> t1
 
