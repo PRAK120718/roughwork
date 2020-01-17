@@ -30,7 +30,7 @@ dag = DAG(
     default_args=default_args,
     dagrun_timeout=timedelta(hours=2),
     # schedule_interval='0 3 * * *'
-    schedule_interval=timedelta(minutes=5)
+    schedule_interval=timedelta(days=5)
 )
 step_adder=[]
 step_checker=[]
