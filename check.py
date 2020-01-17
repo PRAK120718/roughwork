@@ -12,7 +12,7 @@ local_tz = pendulum.timezone("Asia/Kolkata")
 default_args = {
     'owner': 'Airflow',
     'depends_on_past': False,
-    'start_date': datetime(2020, 1, 17, 11, 20, 0,local_tz),
+    'start_date': datetime(2020, 1, 17, 11, 20, 0,tzinfo=local_tz),
     'email': ['prakarsh2512@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': True,
