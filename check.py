@@ -6,6 +6,7 @@ from airflow.contrib.operators.emr_create_job_flow_operator import EmrCreateJobF
 from airflow.contrib.operators.emr_add_steps_operator import EmrAddStepsOperator
 from airflow.contrib.sensors.emr_step_sensor import EmrStepSensor
 from airflow.contrib.operators.emr_terminate_job_flow_operator import EmrTerminateJobFlowOperator
+from airflow.operators.bash_operator import BashOperator
 import pendulum
 
 local_tz = pendulum.timezone("Asia/Kolkata")
@@ -24,7 +25,7 @@ default_args = {
 }
 
 dag = DAG(
-    'check_emr_steps',
+    'check_steps',
     catchup=False,
     default_args=default_args,
     dagrun_timeout=timedelta(hours=2),
@@ -33,13 +34,23 @@ dag = DAG(
 )
 step_adder=[]
 step_checker=[]
+t1 = BashOperator(
+    task_id='print_date',
+    bash_command='date',
+    dag=dag)
+
+t2= BashOperator(
+    task_id='againprint_date',
+    bash_command='date',
+    dag=dag)
+
 def poke():
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
     job_flow_id = "j-2ASQREUMPJ0Y7"
     aws_conn_id = 'aws_emr'
     st=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
     loop=st.split("\n")
-    for i in range(len(loop)):
+    for i in range(0,len(loop)):
         steps=[
             {
                 'Name': 'test step',
@@ -72,7 +83,7 @@ def poke():
         step_checker.append(step_checkr)
 
 def execute():
-    chain(step_adder,step_checker)
+    chain(t1,step_adder,step_checker,t2)
 
 def main():
     poke()
