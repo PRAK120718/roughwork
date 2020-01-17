@@ -58,7 +58,7 @@ def poke():
             }
         ]
         step_addr = EmrAddStepsOperator(
-            task_id='add_steps '+str(i),
+            task_id='add_steps'+str(i),
             job_flow_id="j-2ASQREUMPJ0Y7",
             aws_conn_id='aws_emr',
             steps=steps,
