@@ -42,6 +42,7 @@ def poke():
     aws_conn_id = 'aws_emr'
     st=hook.read_key(key='prod_deployment/conf/athena_all_tables', bucket_name='bounce-data-platform')
     loop=st.split("\n")
+    print(loop)
     for i in range(0,len(loop)):
         steps=[
             {
