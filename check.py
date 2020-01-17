@@ -17,7 +17,6 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': True,
     'retries': 0,
-    'catchup': False
     # 'queue': 'bash_queue',
     # 'pool': 'backfill',
     # 'priority_weight': 10,
@@ -44,6 +43,7 @@ HIVE_TEST_STEPS = [
 dag = DAG(
     'prakarsh_hive',
     default_args=default_args,
+    catchup=False,
     dagrun_timeout=timedelta(hours=2),
     #schedule_interval='0 3 * * *'
     schedule_interval=timedelta(minutes=5)
