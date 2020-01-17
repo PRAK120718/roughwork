@@ -7,6 +7,7 @@ from airflow.contrib.operators.emr_add_steps_operator import EmrAddStepsOperator
 from airflow.contrib.sensors.emr_step_sensor import EmrStepSensor
 from airflow.contrib.operators.emr_terminate_job_flow_operator import EmrTerminateJobFlowOperator
 from airflow.operators.bash_operator import BashOperator
+from airflow.operators.python_operator import PythonOperator
 import pendulum
 
 local_tz = pendulum.timezone("Asia/Kolkata")
@@ -34,15 +35,6 @@ dag = DAG(
 )
 step_adder=[]
 step_checker=[]
-t1 = BashOperator(
-    task_id='print_date',
-    bash_command='date',
-    dag=dag)
-
-t2= BashOperator(
-    task_id='againprint_date',
-    bash_command='date',
-    dag=dag)
 
 def poke():
     hook = hooks.S3_hook.S3Hook(aws_conn_id='aws_s3')
@@ -82,14 +74,28 @@ def poke():
         )
         step_checker.append(step_checkr)
 
-def execute():
-    chain(t1,step_adder,step_checker,t2)
 
-def main():
+def print_context(ds, **kwargs):
     poke()
-    execute()
+    return 'Whatever you return gets printed in the logs'
 
-if __name__=="__ main__":
-    main()
+run_this = PythonOperator(
+    task_id='print_the_context',
+    provide_context=True,
+    python_callable=print_context,
+    dag=dag,
+)
+
+t2= BashOperator(
+    task_id='againprint_date',
+    bash_command='date',
+    dag=dag)
+
+
+
+for i in range(len(step_adder)):
+    run_this>>step_adder[i]>>step_checker[i]>>t2
+
+
 
 
