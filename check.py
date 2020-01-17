@@ -1,6 +1,4 @@
 from datetime import timedelta,datetime
-
-
 import airflow
 from airflow import DAG
 from airflow import hooks, settings
@@ -8,11 +6,13 @@ from airflow.contrib.operators.emr_create_job_flow_operator import EmrCreateJobF
 from airflow.contrib.operators.emr_add_steps_operator import EmrAddStepsOperator
 from airflow.contrib.sensors.emr_step_sensor import EmrStepSensor
 from airflow.contrib.operators.emr_terminate_job_flow_operator import EmrTerminateJobFlowOperator
+import pendulum
 
+local_tz = pendulum.timezone("Asia/Kolkata")
 default_args = {
     'owner': 'Airflow',
     'depends_on_past': False,
-    'start_date': datetime(2020, 1, 13, 11, 39, 0),
+    'start_date': datetime(2020, 1, 17, 11, 20, 0,local_tz),
     'email': ['prakarsh2512@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': True,
@@ -62,7 +62,7 @@ dag = DAG(
 
 step_adder = EmrAddStepsOperator(
     task_id='add_steps',
-    job_flow_id="j-1WVN1HOQN9FNC",
+    job_flow_id="j-2ASQREUMPJ0Y7",
     aws_conn_id='aws_emr',
     steps=HIVE_TEST_STEPS,
     dag=dag
@@ -70,7 +70,7 @@ step_adder = EmrAddStepsOperator(
 
 step_checker = EmrStepSensor(
     task_id='watch_step',
-    job_flow_id="j-1WVN1HOQN9FNC",
+    job_flow_id="j-2ASQREUMPJ0Y7",
     step_id="{{ task_instance.xcom_pull('add_steps', key='return_value')[0] }}",
     aws_conn_id='aws_emr',
     dag=dag
